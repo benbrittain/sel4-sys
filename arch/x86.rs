@@ -311,7 +311,7 @@ pub unsafe fn seL4_Notify(dest: seL4_CPtr, msg: seL4_Word) {
 }
 
 #[inline(always)]
-pub unsafe fn seL4_Wait(src: seL4_CPtr, sender: *mut seL4_Word) -> seL4_MessageInfo {
+pub unsafe fn seL4_Recv(src: seL4_CPtr, sender: *mut seL4_Word) -> seL4_MessageInfo {
     let mut info = seL4_MessageInfo { words: [0] };
     let badge: seL4_Word;
     let mr0: seL4_Word;
@@ -328,7 +328,7 @@ pub unsafe fn seL4_Wait(src: seL4_CPtr, sender: *mut seL4_Word) -> seL4_MessageI
           "={si}" (info.words[0]),
           "={dx}" (mr0),
           "={cx}" (mr1)
-        : "{ax}" (SyscallId::Wait as seL4_Word),
+        : "{ax}" (SyscallId::Recv as seL4_Word),
         "{bx}" (src)
         : "%edx", "memory"
         : "volatile");
@@ -342,7 +342,7 @@ pub unsafe fn seL4_Wait(src: seL4_CPtr, sender: *mut seL4_Word) -> seL4_MessageI
 }
 
 #[inline(always)]
-pub unsafe fn seL4_WaitWithMRs(src: seL4_CPtr, sender: *mut seL4_Word,
+pub unsafe fn seL4_RecvWithMRs(src: seL4_CPtr, sender: *mut seL4_Word,
                                mr0: *mut seL4_Word, mr1: *mut seL4_Word) -> seL4_MessageInfo {
     let mut info: seL4_MessageInfo = ::core::mem::uninitialized();
     let badge: seL4_Word;
@@ -360,7 +360,7 @@ pub unsafe fn seL4_WaitWithMRs(src: seL4_CPtr, sender: *mut seL4_Word,
         "={si}" (info.words[0]),
           "={di}" (msg0),
           "={cx}" (msg1)
-        : "{ax}" (SyscallId::Wait as seL4_Word),
+        : "{ax}" (SyscallId::Recv as seL4_Word),
         "{bx}" (src)
         : "%edx", "memory"
         : "volatile");
@@ -449,7 +449,7 @@ pub unsafe fn seL4_CallWithMRs(mut dest: seL4_CPtr, msgInfo: seL4_MessageInfo,
 }
 
 #[inline(always)]
-pub unsafe fn seL4_ReplyWait(dest: seL4_CPtr, msgInfo: seL4_MessageInfo,
+pub unsafe fn seL4_ReplyRecv(dest: seL4_CPtr, msgInfo: seL4_MessageInfo,
                              sender: *mut seL4_Word) -> seL4_MessageInfo {
     let mut info: seL4_MessageInfo = ::core::mem::uninitialized();
     let badge: seL4_Word;
@@ -468,7 +468,7 @@ pub unsafe fn seL4_ReplyWait(dest: seL4_CPtr, msgInfo: seL4_MessageInfo,
         "={si}" (info.words[0]),
           "={di}" (mr0),
           "={cx}" (mr1)
-        : "{ax}" (SyscallId::ReplyWait as seL4_Word),
+        : "{ax}" (SyscallId::ReplyRecv as seL4_Word),
         "{bx}" (dest),
           "{si}" (msgInfo.words[0]),
           "{di}" (mr0),
