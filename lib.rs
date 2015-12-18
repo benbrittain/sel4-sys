@@ -8,7 +8,7 @@
  * according to those terms.
  */
 #![no_std]
-#![feature(asm, no_std)]
+#![feature(asm, no_std, core_slice_ext)]
 #![allow(bad_style, unused_parens, unused_assignments)]
 #![doc(html_root_url = "https://doc.robigalia.org/")]
 
