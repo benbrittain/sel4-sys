@@ -75,6 +75,56 @@ pub enum seL4_CapRights {
     AllRights = 0x07,
 }
 
+pub static seL4_CapNull: seL4_Word          = 0; /* null cap */
+pub static seL4_CapInitThreadTCB: seL4_Word = 1; /* initial thread's TCB cap */
+pub static seL4_CapInitThreadCNode: seL4_Word     = 2; /* initial thread's root CNode cap */
+pub static seL4_CapInitThreadVSpace: seL4_Word    = 3; /* initial thread's VSpace cap */
+pub static seL4_CapIRQControl: seL4_Word    = 4; /* global IRQ controller cap */
+pub static seL4_CapASIDControl: seL4_Word   = 5; /* global ASID controller cap */
+pub static seL4_CapInitThreadASIDPool: seL4_Word  = 6; /* initial thread's ASID pool cap */
+pub static seL4_CapIOPort: seL4_Word        = 7; /* global IO port cap (null cap if not supported) */
+pub static seL4_CapIOSpace: seL4_Word       = 8; /* global IO space cap (null cap if no IOMMU support) */
+pub static seL4_CapBootInfoFrame: seL4_Word = 9; /* bootinfo frame cap */
+pub static seL4_CapInitThreadIPCBuffer: seL4_Word = 10; /* initial thread's IPC buffer frame cap */
+pub static seL4_CapDomain: seL4_Word        = 11;  /* global domain controller cap */
+
+#[repr(C)]
+pub struct seL4_SlotRegion {
+    pub start: seL4_Word , /* first CNode slot position OF region */
+    pub end: seL4_Word,   /* first CNode slot position AFTER region */
+}
+
+#[repr(C)]
+pub struct seL4_DeviceRegion {
+    pub basePaddr: seL4_Word,     /* base physical address of device region */
+    pub frameSizeBits: seL4_Word, /* size (2^n bytes) of a device-region frame */
+    pub frames: seL4_SlotRegion,        /* device-region frame caps */
+}
+
+/* XXX: These MUST match the kernel config at build-time. */
+pub const CONFIG_MAX_NUM_BOOTINFO_UNTYPED_CAPS: usize = 167;
+pub const CONFIG_MAX_NUM_BOOTINFO_DEVICE_REGIONS: usize = 199;
+
+#[repr(C)]
+pub struct seL4_BootInfo {
+    pub nodeID: seL4_Word,          /* ID [0..numNodes-1] of the seL4 node (0 if uniprocessor) */
+    pub numNodes: seL4_Word,        /* number of seL4 nodes (1 if uniprocessor) */
+    pub numIOPTLevels: seL4_Word,   /* number of IOMMU PT levels (0 if no IOMMU support) */
+    pub ipcBuffer: *mut seL4_IPCBuffer,       /* pointer to initial thread's IPC buffer */
+    pub empty: seL4_SlotRegion,           /* empty slots (null caps) */
+    pub sharedFrames: seL4_SlotRegion,    /* shared-frame caps (shared between seL4 nodes) */
+    pub userImageFrames: seL4_SlotRegion, /* userland-image frame caps */
+    pub userImagePDs: seL4_SlotRegion,    /* userland-image PD caps */
+    pub userImagePTs: seL4_SlotRegion,    /* userland-image PT caps */
+    pub untyped: seL4_SlotRegion,         /* untyped-object caps (untyped caps) */
+    pub untypedPaddrList:   [seL4_Word; CONFIG_MAX_NUM_BOOTINFO_UNTYPED_CAPS], /* physical address of each untyped cap */
+    pub untypedSizeBitsList: [u8; CONFIG_MAX_NUM_BOOTINFO_UNTYPED_CAPS], /* size (2^n) bytes of each untyped cap */
+    pub initThreadCNodeSizeBits: u8, /* initial thread's root CNode size (2^n slots) */
+    pub numDeviceRegions: seL4_Word,        /* number of device regions */
+    pub deviceRegions: [seL4_DeviceRegion; CONFIG_MAX_NUM_BOOTINFO_DEVICE_REGIONS], /* device regions */
+    pub initThreadDomain: u32, /* Initial thread's domain ID */
+}
+
 #[inline(always)]
 pub unsafe fn seL4_GetTag() -> seL4_MessageInfo {
     let mut tag: seL4_MessageInfo = ::core::mem::uninitialized();
