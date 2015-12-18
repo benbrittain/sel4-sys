@@ -7,5 +7,6 @@
     "arch": "x86",
     "linker-is-gnu": true,
     "executables": true,
-    "pre-link-args": ["-m32"]
+    "no-compiler-rt": true,
+    "pre-link-args": ["-m32", "-ffreestanding", "-nodefaultlibs", "-nostdlib"]
 }
