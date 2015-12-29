@@ -469,7 +469,7 @@ def generate_result_struct(interface_name, method_name, output_params):
     #   typedef struct seL4_CNode_Copy seL4_CNode_Copy_t;
     #
     result = []
-    result.append("#[repr(C)] pub struct %s_%s {" % (interface_name, method_name))
+    result.append("#[repr(C)] #[derive(Debug, Clone, Copy, PartialEq, Eq)] pub struct %s_%s {" % (interface_name, method_name))
     result.append("\tpub error: isize,")
     for i in output_params:
         if not i.type.pass_by_reference():
