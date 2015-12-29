@@ -30,6 +30,23 @@ pub enum seL4_IA32_VMAttributes {
     WriteCombining = 4,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct seL4_UserContext {
+    pub eip: seL4_Word,
+    pub esp: seL4_Word,
+    pub eflags: seL4_Word,
+    pub eax: seL4_Word,
+    pub ebx: seL4_Word,
+    pub ecx: seL4_Word,
+    pub edx: seL4_Word,
+    pub esi: seL4_Word,
+    pub edi: seL4_Word,
+    pub ebp: seL4_Word,
+    pub tls_base: seL4_Word,
+    pub fs: seL4_Word,
+    pub gs: seL4_Word,
+}
+
 #[inline(always)]
 pub unsafe fn seL4_GetTag() -> seL4_MessageInfo {
     let mut tag: seL4_MessageInfo = ::core::mem::uninitialized();

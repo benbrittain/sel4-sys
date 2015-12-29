@@ -40,22 +40,6 @@ pub type seL4_TCB = seL4_CPtr;
 pub type seL4_Untyped = seL4_CPtr;
 pub type seL4_DomainSet = seL4_CPtr;
 
-pub struct seL4_UserContext {
-    pub eip: seL4_Word,
-    pub esp: seL4_Word,
-    pub eflags: seL4_Word,
-    pub eax: seL4_Word,
-    pub ebx: seL4_Word,
-    pub ecx: seL4_Word,
-    pub edx: seL4_Word,
-    pub esi: seL4_Word,
-    pub edi: seL4_Word,
-    pub ebp: seL4_Word,
-    pub tls_base: seL4_Word,
-    pub fs: seL4_Word,
-    pub gs: seL4_Word,
-}
-
 pub const seL4_MsgLengthBits: usize = 7;
 pub const seL4_MsgMaxLength: usize = 120;
 pub const seL4_MsgExtraCapBits: usize = 2;
