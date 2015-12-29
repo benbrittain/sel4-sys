@@ -470,10 +470,10 @@ def generate_result_struct(interface_name, method_name, output_params):
     #
     result = []
     result.append("#[repr(C)] pub struct %s_%s {" % (interface_name, method_name))
-    result.append("\terror: isize,")
+    result.append("\tpub error: isize,")
     for i in output_params:
         if not i.type.pass_by_reference():
-            result.append("\t%s," % i.type.render_parameter_name(i.name))
+            result.append("\tpub %s," % i.type.render_parameter_name(i.name))
     result.append("}")
     result.append("")
 
