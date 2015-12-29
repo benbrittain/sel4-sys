@@ -76,12 +76,14 @@ pub static seL4_CapInitThreadIPCBuffer: seL4_Word = 10; /* initial thread's IPC 
 pub static seL4_CapDomain: seL4_Word        = 11;  /* global domain controller cap */
 
 #[repr(C)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct seL4_SlotRegion {
     pub start: seL4_Word , /* first CNode slot position OF region */
     pub end: seL4_Word,   /* first CNode slot position AFTER region */
 }
 
 #[repr(C)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct seL4_DeviceRegion {
     pub basePaddr: seL4_Word,     /* base physical address of device region */
     pub frameSizeBits: seL4_Word, /* size (2^n bytes) of a device-region frame */
@@ -93,6 +95,7 @@ pub const CONFIG_MAX_NUM_BOOTINFO_UNTYPED_CAPS: usize = 167;
 pub const CONFIG_MAX_NUM_BOOTINFO_DEVICE_REGIONS: usize = 199;
 
 #[repr(C)]
+#[derive(Copy)]
 pub struct seL4_BootInfo {
     pub nodeID: seL4_Word,          /* ID [0..numNodes-1] of the seL4 node (0 if uniprocessor) */
     pub numNodes: seL4_Word,        /* number of seL4 nodes (1 if uniprocessor) */
@@ -110,4 +113,10 @@ pub struct seL4_BootInfo {
     pub numDeviceRegions: seL4_Word,        /* number of device regions */
     pub deviceRegions: [seL4_DeviceRegion; CONFIG_MAX_NUM_BOOTINFO_DEVICE_REGIONS], /* device regions */
     pub initThreadDomain: u32, /* Initial thread's domain ID */
+}
+
+impl ::core::clone::Clone for seL4_BootInfo {
+    fn clone(&self) -> Self {
+        *self
+    }
 }
