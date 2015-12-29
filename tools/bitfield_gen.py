@@ -183,7 +183,7 @@ def p_error(t):
 ## Rust templates
 
 type_template = \
-"""#[repr(C)] pub struct %(name)s {
+"""#[repr(C)] #[derive(Debug, Clone, Copy, PartialEq, Eq)] pub struct %(name)s {
     words: [%(type)s; %(multiple)d],
 }"""
 
