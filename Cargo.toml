@@ -23,3 +23,6 @@ SEL4_CONFIG_BENCHMARK = []
 
 [lib]
 path = "lib.rs"
+
+[dependencies]
+rlibc = "0.1.4"
