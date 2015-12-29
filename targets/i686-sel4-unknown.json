@@ -1,5 +1,5 @@
 {
-    "llvm-target": "i686-unknown-linux-gnu",
+    "llvm-target": "i686-elf",
     "target-endian": "little",
     "target-pointer-width": "32",
     "os": "sel4",
@@ -7,6 +7,7 @@
     "arch": "x86",
     "linker-is-gnu": true,
     "executables": true,
-    "no-compiler-rt": true,
+    "no-compiler-rt": false,
+    "relocation-model": "static",
     "pre-link-args": ["-m32", "-ffreestanding", "-nodefaultlibs", "-nostdlib"]
 }
