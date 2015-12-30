@@ -14,6 +14,7 @@
 #![doc(html_root_url = "https://doc.robigalia.org/")]
 
 extern crate rlibc;
+#[macro_use] extern crate bitflags_core;
 
 #[cfg(all(target_arch = "x86", target_pointer_width = "32"))]
 include!("arch/x86.rs");
@@ -58,11 +59,12 @@ pub struct seL4_IPCBuffer {
     pub receiveDepth: seL4_CPtr,
 }
 
-pub enum seL4_CapRights {
-    CanWrite = 0x01,
-    CanRead = 0x02,
-    CanGrant = 0x04,
-    AllRights = 0x07,
+bitflags! {
+    flags seL4_CapRights: seL4_Word {
+        const CanWrite = 0x1,
+        const CanRead = 0x2,
+        const CanGrant = 0x4
+    }
 }
 
 pub static seL4_CapNull: seL4_Word          = 0; /* null cap */

@@ -149,7 +149,10 @@ class Type(object):
         of this type.
         """
         assert word_num == 0
-        return "%s" % var_name
+        if self.name == "seL4_CapRights":
+            return "%s.bits()" % var_name
+        else:
+            return "%s" % var_name
 
     def double_word_expression(self, var_name, word_num):
 
@@ -371,7 +374,7 @@ def generate_marshal_expressions(params, num_mrs, structs):
             expr = param.type.c_expression(param.name);
             expr = "(%s & %#x)" % (expr, (1 << num_bits) - 1)
             if target_offset:
-                expr = "((%s as seL4_Word) << %d)" % (expr, target_offset)
+                expr = "((%s /* a */ as seL4_Word) << %d)" % (expr, target_offset)
             word_array[target_word].append(expr)
             return
 
