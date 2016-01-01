@@ -272,7 +272,7 @@ pub unsafe fn seL4_ReplyWithMRs(msgInfo: seL4_MessageInfo,
 
 
 #[inline(always)]
-pub unsafe fn seL4_Notify(dest: seL4_CPtr, msg: seL4_Word) {
+pub unsafe fn seL4_Signal(dest: seL4_CPtr, msg: seL4_Word) {
     asm!("pushl %ebp
           movl %esp, %ecx
           leal 1f, %edx
