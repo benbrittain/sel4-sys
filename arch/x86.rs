@@ -24,6 +24,9 @@ pub type seL4_IA32_IOPageTable = seL4_CPtr;
 error_types!(u32);
 
 pub const Default_VMAttributes: usize = 0;
+
+#[repr(u32)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum seL4_IA32_VMAttributes {
     WriteBack = 0,
     WriteThrough = 1,
@@ -32,6 +35,7 @@ pub enum seL4_IA32_VMAttributes {
     WriteCombining = 4,
 }
 
+#[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct seL4_UserContext {
     pub eip: seL4_Word,

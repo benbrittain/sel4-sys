@@ -113,6 +113,8 @@ pub const seL4_MsgMaxLength: usize = 120;
 pub const seL4_MsgExtraCapBits: usize = 2;
 pub const seL4_MsgMaxExtraCaps: usize = (1usize << seL4_MsgExtraCapBits) - 1;
 
+#[repr(C)]
+#[derive(Copy)]
 pub struct seL4_IPCBuffer {
     pub tag: seL4_MessageInfo,
     pub msg: [seL4_Word; seL4_MsgMaxLength],
@@ -123,13 +125,13 @@ pub struct seL4_IPCBuffer {
     pub receiveDepth: seL4_CPtr,
 }
 
-bitflags! {
-    flags seL4_CapRights: seL4_Word {
-        const CanWrite = 0x1,
-        const CanRead = 0x2,
-        const CanGrant = 0x4
+impl ::core::clone::Clone for seL4_IPCBuffer {
+    fn clone(&self) -> Self {
+        *self
     }
 }
+
+/* bootinfo */
 
 pub static seL4_CapNull: seL4_Word          = 0; /* null cap */
 pub static seL4_CapInitThreadTCB: seL4_Word = 1; /* initial thread's TCB cap */
