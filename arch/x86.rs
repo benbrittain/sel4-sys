@@ -316,7 +316,7 @@ pub unsafe fn seL4_Recv(src: seL4_CPtr, sender: *mut seL4_Word) -> seL4_MessageI
 
     opt_assign!(sender, badge);
 
-    ::core::mem::uninitialized()
+    info
 }
 
 #[inline(always)]
