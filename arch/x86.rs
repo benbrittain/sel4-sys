@@ -463,7 +463,7 @@ pub unsafe fn seL4_ReplyRecv(dest: seL4_CPtr, msgInfo: seL4_MessageInfo,
 }
 
 #[inline(always)]
-pub unsafe fn seL4_ReplayWaitWithMRs(dest: seL4_CPtr, msgInfo: seL4_MessageInfo, sender: *mut seL4_Word,
+pub unsafe fn seL4_ReplyWaitWithMRs(dest: seL4_CPtr, msgInfo: seL4_MessageInfo, sender: *mut seL4_Word,
                                      mr0: *mut seL4_Word, mr1: *mut seL4_Word) -> seL4_MessageInfo {
     let mut info: seL4_MessageInfo = ::core::mem::uninitialized();
     let badge: seL4_Word;
