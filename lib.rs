@@ -13,8 +13,72 @@
 #![allow(bad_style, unused_parens, unused_assignments)]
 #![doc(html_root_url = "https://doc.robigalia.org/")]
 
+#[cfg(not(any(
+    all(target_arch = "arm", target_pointer_width = "32"),
+    all(target_arch = "x86", target_pointer_width = "32")
+ )))]
+use architecture_not_supported_sorry;
+
+
 extern crate rlibc;
 #[macro_use] extern crate bitflags_core;
+
+pub use seL4_Error::*;
+pub use seL4_FaultType::*;
+pub use seL4_LookupFailureType::*;
+
+// XXX: These can't be repr(C), but it needs to "match an int" according to the comments on
+// SEL4_FORCE_LONG_ENUM. There's no single type that matches in Rust, so it needs to be
+// per-architecture. We use a macro to define them all in one whack, with the invoker providing
+// only what the size of the enums ought to be. Each arch then invokes it.
+macro_rules! error_types {
+    ($int_width:ident) => {
+        bitflags! {
+            flags seL4_CapRights: $int_width {
+                const seL4_CanWrite = 0x1,
+                const seL4_CanRead = 0x2,
+                const seL4_CanGrant = 0x4
+            }
+        }
+
+        #[repr($int_width)]
+        #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+        pub enum seL4_Error {
+            seL4_NoError = 0,
+            seL4_InvalidArgument,
+            seL4_InvalidCapability,
+            seL4_IllegalOperation,
+            seL4_RangeError,
+            seL4_AlignmentError,
+            seL4_FailedLookup,
+            seL4_TruncatedMessage,
+            seL4_DeleteFirst,
+            seL4_RevokeFirst,
+            seL4_NotEnoughMemory,
+        }
+
+        #[repr($int_width)]
+        #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+        pub enum seL4_FaultType {
+            seL4_NoFault = 0,
+            seL4_CapFault,
+            seL4_VMFault,
+            seL4_UnknownSyscall,
+            seL4_UserException,
+        }
+
+        #[repr($int_width)]
+        #[derive(Debug, Copy, Clone, PartialEq, Eq)]
+        pub enum seL4_LookupFailureType {
+            seL4_NoFailure = 0,
+            seL4_InvalidRoot,
+            seL4_MissingCapability,
+            seL4_DepthMismatch,
+            seL4_GuardMismatch,
+        }
+    }
+}
+
 
 #[cfg(all(target_arch = "x86", target_pointer_width = "32"))]
 include!("arch/x86.rs");

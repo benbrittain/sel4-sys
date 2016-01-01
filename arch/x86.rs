@@ -21,6 +21,8 @@ pub type seL4_IA32_PageDirectory = seL4_CPtr;
 pub type seL4_IA32_PageTable = seL4_CPtr;
 pub type seL4_IA32_IOPageTable = seL4_CPtr;
 
+error_types!(u32);
+
 pub const Default_VMAttributes: usize = 0;
 pub enum seL4_IA32_VMAttributes {
     WriteBack = 0,
