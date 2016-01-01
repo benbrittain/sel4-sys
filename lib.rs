@@ -55,6 +55,7 @@ macro_rules! error_types {
             seL4_DeleteFirst,
             seL4_RevokeFirst,
             seL4_NotEnoughMemory,
+            // XXX: Code depends on this being the last variant
         }
 
         #[repr($int_width)]
@@ -75,6 +76,7 @@ macro_rules! error_types {
             seL4_MissingCapability,
             seL4_DepthMismatch,
             seL4_GuardMismatch,
+            // XXX: Code depends on this being the last variant
         }
     }
 }
