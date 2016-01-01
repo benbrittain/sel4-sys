@@ -351,6 +351,37 @@ pub unsafe fn seL4_RecvWithMRs(src: seL4_CPtr, sender: *mut seL4_Word,
 }
 
 #[inline(always)]
+pub unsafe fn seL4_NBRecv(src: seL4_CPtr, sender: *mut seL4_Word) -> seL4_MessageInfo {
+    let mut info: seL4_MessageInfo = ::core::mem::uninitialized();
+    let badge: seL4_Word = 0;
+    let mr0: seL4_Word = 0;
+    let mr1: seL4_Word = 0;
+
+    asm!("pushl %ebp
+          movl %esp, %ecx
+          leal 1f, %edx
+          1:
+          sysenter
+          movl %ebp, %ecx
+          popl %ebp"
+        : "={bx}" (badge),
+          "={si}" (info.words[0]),
+          "={dx}" (mr0),
+          "={cx}" (mr1)
+        : "{ax}" (SyscallId::NBRecv as seL4_Word),
+        "{bx}" (src)
+        : "%edx", "memory"
+        : "volatile");
+
+    seL4_SetMR(0, mr0);
+    seL4_SetMR(1, mr1);
+
+    opt_assign!(sender, badge);
+
+    info
+}
+
+#[inline(always)]
 pub unsafe fn seL4_Call(mut dest: seL4_CPtr, msgInfo: seL4_MessageInfo) -> seL4_MessageInfo {
     let mut info: seL4_MessageInfo = ::core::mem::uninitialized();
     let mut mr0 = seL4_GetMR(0);
