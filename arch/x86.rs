@@ -281,8 +281,8 @@ pub unsafe fn seL4_Signal(dest: seL4_CPtr) {
           popl %ebp"
         :
         : "{ax}" (SyscallId::Send as seL4_Word),
-        "{bx}" (dest),
-          "{si}" (seL4_MessageInfo::new(0, 0, 0, 1).words[0]),
+          "{bx}" (dest),
+          "{si}" (seL4_MessageInfo::new(0, 0, 0, 1).words[0])
         : "%ecx", "%edx"
         : "volatile");
 }
