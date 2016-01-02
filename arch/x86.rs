@@ -353,9 +353,9 @@ pub unsafe fn seL4_RecvWithMRs(src: seL4_CPtr, sender: *mut seL4_Word,
 #[inline(always)]
 pub unsafe fn seL4_NBRecv(src: seL4_CPtr, sender: *mut seL4_Word) -> seL4_MessageInfo {
     let mut info: seL4_MessageInfo = ::core::mem::uninitialized();
-    let badge: seL4_Word = 0;
-    let mr0: seL4_Word = 0;
-    let mr1: seL4_Word = 0;
+    let mut badge: seL4_Word = 0;
+    let mut mr0: seL4_Word = 0;
+    let mut mr1: seL4_Word = 0;
 
     asm!("pushl %ebp
           movl %esp, %ecx
