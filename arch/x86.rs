@@ -272,7 +272,7 @@ pub unsafe fn seL4_ReplyWithMRs(msgInfo: seL4_MessageInfo,
 
 
 #[inline(always)]
-pub unsafe fn seL4_Signal(dest: seL4_CPtr, msg: seL4_Word) {
+pub unsafe fn seL4_Signal(dest: seL4_CPtr) {
     asm!("pushl %ebp
           movl %esp, %ecx
           leal 1f, %edx
@@ -283,7 +283,6 @@ pub unsafe fn seL4_Signal(dest: seL4_CPtr, msg: seL4_Word) {
         : "{ax}" (SyscallId::Send as seL4_Word),
         "{bx}" (dest),
           "{si}" (seL4_MessageInfo::new(0, 0, 0, 1).words[0]),
-          "{di}" (msg)
         : "%ecx", "%edx"
         : "volatile");
 }
