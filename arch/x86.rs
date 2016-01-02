@@ -25,6 +25,22 @@ error_types!(u32);
 
 pub const Default_VMAttributes: usize = 0;
 
+#[repr(C)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum seL4_ObjectType {
+    seL4_UntypedObject = 0,
+    seL4_TCBObject,
+    seL4_EndpointObject,
+    seL4_NotificationObject,
+    seL4_CapTableObject,
+    seL4_IA32_4K,
+    seL4_IA32_LargePage,
+    seL4_IA32_PageTableObject,
+    seL4_IA32_PageDirectoryObject,
+    seL4_IA32_PDPTObject,
+    seL4_IA32_IOPageTableObject,
+}
+
 #[repr(u32)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum seL4_IA32_VMAttributes {

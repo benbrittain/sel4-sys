@@ -103,19 +103,6 @@ include!(concat!(env!("OUT_DIR"), "/arm_syscall_stub.rs"));
 include!(concat!(env!("OUT_DIR"), "/types.rs"));
 include!(concat!(env!("OUT_DIR"), "/syscalls.rs"));
 
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum seL4_ObjectType {
-    seL4_UntypedObject = 0,
-    seL4_TCBObject,
-    seL4_EndpointObject,
-    seL4_NotificationObject,
-    seL4_CapTableObject,
-    #[cfg(all(target_arch = "x86", target_pointer_width = "32"))]
-    include!("arch/x86_object_types.rs"),
-    #[cfg(all(target_arch = "arm", target_pointer_width = "32"))]
-    include!("arch/arm_object_types.rs"),
-}
 pub type seL4_CNode = seL4_CPtr;
 pub type seL4_IRQHandler = seL4_CPtr;
 pub type seL4_IRQControl = seL4_CPtr;
