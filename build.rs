@@ -18,7 +18,7 @@ fn main() {
     let arches = ["x86", "arm"];
     for arch in &arches {
         assert!(Command::new("/usr/bin/env")
-            .arg("python")
+            .arg("python2")
             .args(&["tools/syscall_stub_gen.py", "-a", arch,
                   "seL4/libsel4/include/interfaces/sel4.xml",
                   &*format!("seL4/libsel4/arch_include/{}/interfaces/sel4arch.xml", arch),
@@ -28,7 +28,7 @@ fn main() {
 
     for arch in &arches {
         assert!(Command::new("/usr/bin/env")
-            .arg("python")
+            .arg("python2")
             .args(&["tools/invocation_header_gen.py",
                   "--dest", &*format!("{}/{}_invocation.rs", out_dir, arch),
                   "seL4/libsel4/include/interfaces/sel4.xml",
@@ -37,7 +37,7 @@ fn main() {
     }
 
     assert!(Command::new("/usr/bin/env")
-        .arg("python")
+        .arg("python2")
         .args(&["tools/syscall_header_gen.py",
               "--xml", "seL4/include/api/syscall.xml",
               "--dest", &*format!("{}/syscalls.rs", out_dir)])
@@ -46,7 +46,7 @@ fn main() {
     let bfin = File::open("seL4/libsel4/include/sel4/types.bf").unwrap();
     let bfout = File::create(&*format!("{}/types.rs", out_dir)).unwrap();
     assert!(Command::new("/usr/bin/env")
-        .arg("python")
+        .arg("python2")
         .arg("tools/bitfield_gen.py")
         .stdin(unsafe { Stdio::from_raw_fd(bfin.as_raw_fd()) })
         .stdout(unsafe { Stdio::from_raw_fd(bfout.as_raw_fd()) })
